@@ -78,9 +78,11 @@ void Image::histgram(void)
 {
     unsigned char image_out[Y_SIZE][X_SIZE];
     long hist[256];
-    char buf[256];
     ch3::histgram(imgmat, hist);
-    ch3::histprint(hist, buf);
+    //ch3::histprint(hist);
+    ch3::histimage(hist, image_out);
+    mat2cvimg(image_out);
+    cv::imwrite("histgram_image.png", img);
 }
 
 //void Image

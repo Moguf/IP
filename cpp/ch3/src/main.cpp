@@ -1,5 +1,5 @@
 #include <opencv2/opencv.hpp>
-#include "Image.hpp"
+#include "image.hpp"
 
 int main(int argc, char **argv)
 {

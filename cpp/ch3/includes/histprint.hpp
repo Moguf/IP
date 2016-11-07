@@ -2,6 +2,6 @@
 #define __HISTPRINT_HPP
 #include "Params.hpp"
 namespace ch3{
-void histprint(long hist[256], char *buf);
+void histprint(long hist[256]);
 }
 #endif

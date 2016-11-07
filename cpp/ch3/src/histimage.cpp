@@ -7,7 +7,7 @@
 ---*/
 
 namespace ch3{
-void histiamge(long hist[256], unsigned char image_hist[Y_SIZE][X_SIZE])
+void histimage(long hist[256], unsigned char image_hist[Y_SIZE][X_SIZE])
 {
     int i, j, k, max, range;
     double d;
