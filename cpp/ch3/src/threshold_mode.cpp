@@ -1,7 +1,9 @@
+#include <stdio.h>
 #include "Params.hpp"
 #include "histgram.hpp"
 #include "histsmooth.hpp"
 #include "threshold_mode.hpp"
+
 
 /* --- threshold_mode --- モード法による閾値処理
    image_in: 入力画像配列
@@ -10,7 +12,7 @@
    type: 閾値処理の方法(1, 2)
    --- */
 namespace ch3{
-void threshold_mode(unsigned char image_in[Y_SIZE][X_SIZE],
+int threshold_mode(unsigned char image_in[Y_SIZE][X_SIZE],
                  unsigned char image_out[Y_SIZE][X_SIZE], int smt, int type)
 {
     int i, j, m, n;
@@ -19,10 +21,9 @@ void threshold_mode(unsigned char image_in[Y_SIZE][X_SIZE],
 
     histgram(image_in, hist1);
     for(m=0; m<smt; m++){
-        for(n=0; n<256; n++){
+        for(n=0; n<256; n++)
             hist2[n] = hist1[n];
-            histsmooth(hist2, hist1);
-        }
+        histsmooth(hist2, hist1);
     }
 
     thresh = threshmode(hist1);
@@ -44,6 +45,7 @@ void threshold_mode(unsigned char image_in[Y_SIZE][X_SIZE],
             }
         }
     }
+    return thresh;
 }
 
 /* --- thresmode --- モード法で閾値を決定する
@@ -60,10 +62,12 @@ int threshmode(long hist[256])
         else break;
     }
     min = max;
+    printf("max>>%d\n",max);
     for(n=m; n<256; n++){
-        if(max <= hist[n]) min = hist[n];
+        if(min >= hist[n]) min = hist[n];
         else break;
     }
+    printf("min>>%d\n",min);
     return n-1;
 }
 }

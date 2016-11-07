@@ -8,8 +8,8 @@
    type: 閾値処理の方法(1, 2)
    --- */
 namespace ch3{
-void threshold_discrim(unsigned char image_in[Y_SIZE][X_SIZE],
-                       unsigned char image_out[Y_SIZE][X_SIZE], int type)
+int threshold_discrim(unsigned char image_in[Y_SIZE][X_SIZE],
+                      unsigned char image_out[Y_SIZE][X_SIZE], int type)
 {
     int i, j;
     int thresh;
@@ -36,6 +36,7 @@ void threshold_discrim(unsigned char image_in[Y_SIZE][X_SIZE],
             }
         }
     }
+    return thresh;
 }
 
 /* --- 判別分析法で閾値を決定する

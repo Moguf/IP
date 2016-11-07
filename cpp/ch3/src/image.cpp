@@ -10,7 +10,7 @@
 #include "histimage.hpp"
 #include "histprint.hpp"
 #include "histsmooth.hpp"
-#include "thresh_mode.hpp"
+#include "threshold_mode.hpp"
 #include "threshold_discrim.hpp"
 #include "threshold_dynamic.hpp"
 
@@ -49,7 +49,7 @@ void Image::cvimg2mat(void)
     // サンプルプログラム用に、opencvのCV::Matのデータを行列に渡す。
     for(int i=0 ;i<Y_SIZE ; i++){
         for(int j=0 ;j<X_SIZE ; j++){
-            imgmat[i][j] = img.at<uchar>(i,j);
+            mat[i][j] = img.at<uchar>(i,j);
         }
     }
 }
@@ -68,21 +68,56 @@ void Image::threshold(int thresh, int type)
 {
     // サンプルプログラムのthresholdを呼び出し、結果を画像として保存する。
     unsigned char image_out[Y_SIZE][X_SIZE];
-    ch3::threshold(imgmat, image_out, thresh, type);
+    ch3::threshold(mat, image_out, thresh, type);
     mat2cvimg(image_out);
     cv::imwrite("threshfold.png", img);
-    //Image::mat2cvimg(
 }
 
 void Image::histgram(void)
 {
     unsigned char image_out[Y_SIZE][X_SIZE];
-    long hist[256];
-    ch3::histgram(imgmat, hist);
-    //ch3::histprint(hist);
+    long hist[256], smooth_hist[256];
+
+    //ヒストグラムを求める
+    ch3::histgram(mat, hist);
+    
+    //ヒストグラムを標準出力で表現する
+    ch3::histprint(hist);
+
+    //ヒストグラムの画像化
     ch3::histimage(hist, image_out);
     mat2cvimg(image_out);
     cv::imwrite("histgram_image.png", img);
+
+    //ヒストグラムの平滑化
+    ch3::histsmooth(hist, smooth_hist);
+    //平滑化したヒストグラムの画像化
+    ch3::histimage(smooth_hist, image_out);
+    mat2cvimg(image_out);
+    cv::imwrite("smooth_histgram_image.png", img);
 }
 
-//void Image
+void Image::threshold_mode(int smt, int type)
+{
+    unsigned char image_out[Y_SIZE][X_SIZE];
+
+    std::cout << "thresh(mode)::" << ch3::threshold_mode(mat, image_out, smt, type) << std::endl;; 
+    mat2cvimg(image_out);
+    cv::imwrite("threshold_mode.png", img);    
+}
+
+void Image::threshold_discrim(int type)
+{
+    unsigned char image_out[Y_SIZE][X_SIZE];
+    std::cout << "thresh(discrim)::" << ch3::threshold_discrim(mat, image_out, type) << std::endl;; 
+    mat2cvimg(image_out);
+    cv::imwrite("threshold_discrim.png", img);    
+}
+
+void Image::threshold_dynamic(int type)
+{
+    unsigned char image_out[Y_SIZE][X_SIZE];
+    ch3::threshold_dynamic(mat, image_out, type);
+    mat2cvimg(image_out);
+    cv::imwrite("threshold_dynamic.png", img);    
+}
