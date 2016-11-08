@@ -34,3 +34,5 @@
 
 cpp/ch3/build/*
 !.gitkeep
+
+*.zip
